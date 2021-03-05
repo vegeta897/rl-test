@@ -18,6 +18,10 @@ module.exports = {
 				type: 'asset/resource',
 			},
 			{
+				test: /\.(css)$/,
+				use: ['style-loader', 'css-loader'],
+			},
+			{
 				test: /\.js$/,
 				use: ['source-map-loader'],
 				enforce: 'pre',
