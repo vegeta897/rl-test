@@ -1,0 +1,33 @@
+{
+	"name": "rl-test",
+	"version": "1.0.0",
+	"description": "Building a framework for 7DRL and trying things out",
+	"author": "Devin Spikowski",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"rot-js": "^2.1.5"
+	},
+	"devDependencies": {
+		"live-server": "^1.2.1",
+		"prettier": "^2.2.1",
+		"ts-loader": "^8.0.17",
+		"typescript": "^4.2.3",
+		"webpack": "^5.24.3",
+		"webpack-cli": "^4.5.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/vegeta897/rl-test.git"
+	},
+	"keywords": [
+		"roguelike"
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/vegeta897/rl-test/issues"
+	},
+	"homepage": "https://github.com/vegeta897/rl-test#readme"
+}

@@ -1,2 +1,3 @@
-# rl-test
+# Roguelike Test
+
 Building a framework for 7DRL and trying things out
