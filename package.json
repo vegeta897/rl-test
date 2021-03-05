@@ -1,7 +1,7 @@
 {
 	"name": "rl-test",
 	"version": "1.0.0",
-	"description": "Building a framework for 7DRL and trying things out",
+	"description": "Building a starter for 7DRL and trying things out",
 	"author": {
 		"name": "Devin Spikowski",
 		"url": "https://github.com/vegeta897"
@@ -13,6 +13,8 @@
 		"start": "npm run dev",
 		"build:dev": "webpack --config webpack.dev.js",
 		"build:prod": "webpack --config webpack.prod.js",
+		"publish": "butler push dist/app.zip vegeta897/rl-test:html5",
+		"status": "butler status vegeta897/rl-test:html5",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
@@ -31,7 +33,8 @@
 		"webpack": "^5.24.3",
 		"webpack-cli": "^4.5.0",
 		"webpack-dev-server": "^3.11.2",
-		"webpack-merge": "^5.7.3"
+		"webpack-merge": "^5.7.3",
+		"zip-webpack-plugin": "^4.0.1"
 	},
 	"repository": {
 		"type": "git",
