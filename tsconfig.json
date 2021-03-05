@@ -12,6 +12,11 @@
 		"forceConsistentCasingInFileNames": true,
 		"strictPropertyInitialization": false,
 		"allowJs": true,
-		"lib": ["dom", "es5", "esnext"]
+		"lib": ["dom", "es5", "esnext"],
+		// Loaders needs this to use the more strict mini-signal types
+		"baseUrl": ".",
+		"paths": {
+			"mini-signals": ["node_modules/resource-loader/typings/mini-signals.d.ts"]
+		}
 	}
 }
