@@ -2,19 +2,21 @@ import { RNG } from 'rot-js'
 import * as PIXI from 'pixi.js'
 import { World } from 'ape-ecs'
 import { SystemGroup } from './types'
+import InputSystem from './systems/input'
 import RenderSystem from './systems/render'
 import TWEEN from '@tweenjs/tween.js'
 import './style.css'
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
-const { view, stage } = new PIXI.Application({ width: 800, height: 600 })
+const { view, stage } = new PIXI.Application({
+	width: 800,
+	height: 600,
+})
 view.id = 'viewport'
 view.addEventListener('contextmenu', (e) => e.preventDefault())
 document.body.appendChild(view)
 
-const world = new World()
-world.registerSystem(SystemGroup.Render, RenderSystem)
 PIXI.Ticker.shared.add((time) => {
 	world.runSystems(SystemGroup.Render)
 	TWEEN.update()
@@ -31,6 +33,16 @@ tween
 	.repeat(Infinity)
 	.yoyo(true)
 tween.start()
+
+const UPDATES_PER_SECOND = 60
+setInterval(() => update(), 1000 / UPDATES_PER_SECOND)
+function update() {
+	world.runSystems(SystemGroup.Update)
+}
+
+const world = new World()
+world.registerSystem(SystemGroup.Update, InputSystem)
+world.registerSystem(SystemGroup.Render, RenderSystem)
 
 console.log(RNG.getUniform())
 console.log(RNG.getNormal())
