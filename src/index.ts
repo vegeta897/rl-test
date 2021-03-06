@@ -6,6 +6,7 @@ import InputSystem from './systems/input'
 import RenderSystem from './systems/render'
 import TWEEN from '@tweenjs/tween.js'
 import './style.css'
+import { createSprite, SPRITES } from './sprites'
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
@@ -22,7 +23,8 @@ PIXI.Ticker.shared.add((time) => {
 	TWEEN.update()
 	// console.log(time)
 })
-const sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
+
+const sprite = createSprite(SPRITES.WALL)
 stage.addChild(sprite)
 const tween = new TWEEN.Tween(sprite)
 console.log(sprite)
