@@ -7,8 +7,7 @@ import RenderSystem from './systems/render'
 import TWEEN from '@tweenjs/tween.js'
 import './style.css'
 import { createSprite, SPRITES } from './sprites'
-
-PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
+import { Level } from './level'
 
 const { view, stage } = new PIXI.Application({
 	width: 800,
@@ -18,23 +17,44 @@ view.id = 'viewport'
 view.addEventListener('contextmenu', (e) => e.preventDefault())
 document.body.appendChild(view)
 
-PIXI.Ticker.shared.add((time) => {
+PIXI.Ticker.shared.add(() => {
 	world.runSystems(SystemGroup.Render)
 	TWEEN.update()
-	// console.log(time)
 })
 
-const sprite = createSprite(SPRITES.WALL)
-stage.addChild(sprite)
-const tween = new TWEEN.Tween(sprite)
-console.log(sprite)
-tween
-	.to({ x: 100, y: 100 }, 200)
-	.delay(200)
-	.easing(TWEEN.Easing.Quadratic.InOut)
-	.repeat(Infinity)
-	.yoyo(true)
-tween.start()
+const level = new Level()
+
+const player = createSprite(SPRITES.PLAYER)
+const room = level.map.getRooms()[0]
+const roomWidth = room.getRight() - room.getLeft()
+const roomHeight = room.getBottom() - room.getTop()
+player.x = room.getLeft() * 16
+player.y = room.getTop() * 16
+player.tint = 0x22aa99
+stage.addChild(level.container)
+stage.addChild(player)
+stage.scale = { x: 2, y: 2 } as PIXI.ObservablePoint
+const tweenRight = new TWEEN.Tween(player).to(
+	{ x: room.getRight() * 16 },
+	150 * roomWidth
+)
+const tweenDown = new TWEEN.Tween(player).to(
+	{ y: room.getBottom() * 16 },
+	150 * roomHeight
+)
+const tweenLeft = new TWEEN.Tween(player).to(
+	{ x: room.getLeft() * 16 },
+	150 * roomWidth
+)
+const tweenUp = new TWEEN.Tween(player).to(
+	{ y: room.getTop() * 16 },
+	150 * roomHeight
+)
+tweenRight.chain(tweenDown)
+tweenDown.chain(tweenLeft)
+tweenLeft.chain(tweenUp)
+tweenUp.chain(tweenRight)
+tweenRight.start()
 
 const UPDATES_PER_SECOND = 60
 setInterval(() => update(), 1000 / UPDATES_PER_SECOND)
