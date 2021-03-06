@@ -1,8 +1,8 @@
 import { Query, System } from 'ape-ecs'
-import { Controller } from '../components/controller'
-import { Tile } from '../components/tile'
+import { Controller } from '../components/com_controller'
+import { Tile } from '../components/com_tile'
 import { MoveGrids } from '../types'
-import { Move } from '../components/move'
+import { Move } from '../components/com_move'
 
 export default class ActionSystem extends System {
 	private controllersUpdated!: Query

@@ -1,9 +1,9 @@
 import { Entity, World } from 'ape-ecs'
 import { Container } from 'pixi.js'
-import { Tile } from '../components/tile'
+import { Tile } from '../components/com_tile'
 import { createSprite, SPRITES } from '../sprites'
 import { Entities } from '../types'
-import { Controller } from '../components/controller'
+import { Controller } from '../components/com_controller'
 
 export function createPlayer(world: World, container: Container, x, y): Entity {
 	const sprite = createSprite(SPRITES.PLAYER)

@@ -1,6 +1,6 @@
 import { Query, System } from 'ape-ecs'
-import { Tile } from '../components/tile'
-import { Move } from '../components/move'
+import { Tile } from '../components/com_tile'
+import { Move } from '../components/com_move'
 
 export default class MoveSystem extends System {
 	private moves!: Query

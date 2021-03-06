@@ -1,5 +1,5 @@
 import { Query, System } from 'ape-ecs'
-import { Tile } from '../components/tile'
+import { Tile } from '../components/com_tile'
 
 const TILE_SIZE = 16
 
