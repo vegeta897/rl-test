@@ -1,10 +1,10 @@
 import * as rotJS from 'rot-js'
-import * as PIXI from 'pixi.js'
+import { Container } from 'pixi.js'
 import { createSprite, SPRITES } from './sprites'
 import Dungeon from 'rot-js/lib/map/dungeon'
 
 export class Level {
-	container = new PIXI.Container()
+	container = new Container()
 	map: Dungeon
 	constructor(width = 25, height = 18) {
 		this.map = new rotJS.Map.Digger(width, height, { dugPercentage: 0.3 })

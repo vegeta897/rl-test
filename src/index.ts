@@ -1,15 +1,19 @@
-import { RNG } from 'rot-js'
-import * as PIXI from 'pixi.js'
+import { Application, Ticker, ObservablePoint } from 'pixi.js'
 import { World } from 'ape-ecs'
-import { SystemGroup } from './types'
+import { SystemGroup, Tags } from './types'
 import InputSystem from './systems/input'
-import RenderSystem from './systems/render'
+import TileSystem from './systems/tile'
 import TWEEN from '@tweenjs/tween.js'
 import './style.css'
-import { createSprite, SPRITES } from './sprites'
 import { Level } from './level'
+import { createPlayer } from './archetypes/player'
+import { Tile } from './components/tile'
+import { Controller } from './components/controller'
+import ActionSystem from './systems/action'
+import MoveSystem from './systems/move'
+import { Move } from './components/move'
 
-const { view, stage } = new PIXI.Application({
+const { view, stage } = new Application({
 	width: 800,
 	height: 600,
 })
@@ -17,54 +21,27 @@ view.id = 'viewport'
 view.addEventListener('contextmenu', (e) => e.preventDefault())
 document.body.appendChild(view)
 
-PIXI.Ticker.shared.add(() => {
-	world.runSystems(SystemGroup.Render)
+Ticker.shared.add(() => {
 	TWEEN.update()
 })
 
 const level = new Level()
 
-const player = createSprite(SPRITES.PLAYER)
 const room = level.map.getRooms()[0]
-const roomWidth = room.getRight() - room.getLeft()
-const roomHeight = room.getBottom() - room.getTop()
-player.x = room.getLeft() * 16
-player.y = room.getTop() * 16
-player.tint = 0x22aa99
 stage.addChild(level.container)
-stage.addChild(player)
-stage.scale = { x: 2, y: 2 } as PIXI.ObservablePoint
-const tweenRight = new TWEEN.Tween(player).to(
-	{ x: room.getRight() * 16 },
-	150 * roomWidth
-)
-const tweenDown = new TWEEN.Tween(player).to(
-	{ y: room.getBottom() * 16 },
-	150 * roomHeight
-)
-const tweenLeft = new TWEEN.Tween(player).to(
-	{ x: room.getLeft() * 16 },
-	150 * roomWidth
-)
-const tweenUp = new TWEEN.Tween(player).to(
-	{ y: room.getTop() * 16 },
-	150 * roomHeight
-)
-tweenRight.chain(tweenDown)
-tweenDown.chain(tweenLeft)
-tweenLeft.chain(tweenUp)
-tweenUp.chain(tweenRight)
-tweenRight.start()
-
-const UPDATES_PER_SECOND = 60
-setInterval(() => update(), 1000 / UPDATES_PER_SECOND)
-function update() {
-	world.runSystems(SystemGroup.Update)
-}
+stage.scale = { x: 2, y: 2 } as ObservablePoint
 
 const world = new World()
-world.registerSystem(SystemGroup.Update, InputSystem)
-world.registerSystem(SystemGroup.Render, RenderSystem)
+world.registerComponent(Controller, 1)
+world.registerComponent(Move, 1)
+world.registerComponent(Tile, 1000)
+world.registerTags(...Object.values(Tags))
+world.registerSystem(SystemGroup.Input, InputSystem)
+world.registerSystem(SystemGroup.Update, ActionSystem)
+world.registerSystem(SystemGroup.Update, MoveSystem)
+world.registerSystem(SystemGroup.Update, TileSystem)
 
-console.log(RNG.getUniform())
-console.log(RNG.getNormal())
+const [playerX, playerY] = room.getCenter()
+createPlayer(world, stage, playerX, playerY)
+
+world.runSystems(SystemGroup.Update)

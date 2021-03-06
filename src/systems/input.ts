@@ -1,51 +1,68 @@
-import { System } from 'ape-ecs'
+import { Query, System } from 'ape-ecs'
+import { Directions, SystemGroup } from '../types'
+import { Controller } from '../components/controller'
 
 // Based on https://github.com/fritzy/7drl2020
 export default class InputSystem extends System {
 	keys = new Set()
-	buffer = <string[]>[]
+	currentKey: string | null
+	private inputs!: Query
 	init() {
 		window.addEventListener('keydown', this.keyDown.bind(this))
 		window.addEventListener('keyup', this.keyUp.bind(this))
+		this.inputs = this.createQuery({
+			all: [Controller],
+		})
 	}
 	update() {
-		if (this.buffer.length === 0) return
-		const key = this.buffer.pop()
-		switch (key) {
+		let direction: Directions | null = null
+		switch (this.currentKey) {
 			case 'KeyW':
 			case 'KeyK':
 			case 'ArrowUp':
 			case 'Numpad8':
 				// Up
+				direction = Directions.Up
 				break
 			case 'KeyS':
 			case 'KeyJ':
 			case 'ArrowDown':
 			case 'Numpad2':
 				// Down
+				direction = Directions.Down
 				break
 			case 'KeyA':
 			case 'KeyH':
 			case 'ArrowLeft':
 			case 'Numpad4':
 				// Left
+				direction = Directions.Left
 				break
 			case 'KeyD':
 			case 'KeyL':
 			case 'ArrowRight':
 			case 'Numpad6':
 				// Right
+				direction = Directions.Right
 				break
+		}
+		if (direction !== null) {
+			this.inputs.execute().forEach((entity) => {
+				entity.c.controller.direction = direction
+			})
+			this.world.runSystems(SystemGroup.Update)
 		}
 	}
 	keyDown(e) {
 		if (!e.repeat) {
 			this.keys.add(e.code)
-			this.buffer.push(e.code)
+			this.currentKey = e.code
+			this.world.runSystems(SystemGroup.Input)
 		}
 	}
 
 	keyUp(e) {
 		this.keys.delete(e.code)
+		this.currentKey = null
 	}
 }

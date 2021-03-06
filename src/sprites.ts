@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js'
+import { BaseTexture, Texture, Rectangle, Sprite } from 'pixi.js'
 import sheetImage from './assets/1bitpack_kenney.png'
 
 export enum SPRITES {
@@ -6,23 +6,19 @@ export enum SPRITES {
 	PLAYER = 'player',
 }
 
-const textures = <PIXI.Texture[]>[]
+const textures = <Texture[]>[]
 
 function loadSheet() {
-	const baseTexture = PIXI.BaseTexture.from(sheetDefinition.filename)
+	const baseTexture = BaseTexture.from(sheetDefinition.filename)
 	baseTexture.scaleMode = 0
-	console.log(baseTexture.scaleMode, PIXI.SCALE_MODES)
 	for (const texture of sheetDefinition.textures) {
 		const { key, x, y, w, h } = texture
-		textures[key] = new PIXI.Texture(
-			baseTexture,
-			new PIXI.Rectangle(x, y, w, h)
-		)
+		textures[key] = new Texture(baseTexture, new Rectangle(x, y, w, h))
 	}
 }
 
 export function createSprite(spriteName: SPRITES) {
-	return new PIXI.Sprite(textures[spriteName])
+	return new Sprite(textures[spriteName])
 }
 
 const sheetDefinition = {
