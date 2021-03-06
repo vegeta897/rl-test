@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "es5",
-		"module": "es6",
+		"target": "es6",
+		"module": "esnext",
 		"moduleResolution": "node",
 		"strict": true,
 		"noUnusedLocals": true,
@@ -13,7 +13,7 @@
 		"strictPropertyInitialization": false,
 		"allowJs": true,
 		"resolveJsonModule": true,
-		"lib": ["dom", "es5", "esnext"],
+		"lib": ["dom", "dom.iterable", "esnext"],
 		// Loaders needs this to use the more strict mini-signal types
 		"baseUrl": "./src",
 		"paths": {
