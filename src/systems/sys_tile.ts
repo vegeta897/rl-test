@@ -1,7 +1,7 @@
 import { Query, System } from 'ape-ecs'
 import { Tile } from '../components/com_tile'
 
-const TILE_SIZE = 16
+export const TILE_SIZE = 16
 
 export default class TileSystem extends System {
 	private tilesUpdated!: Query

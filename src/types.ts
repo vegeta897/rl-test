@@ -1,7 +1,6 @@
 export enum SystemGroup {
 	Input = 'input',
 	Update = 'update',
-	Render = 'render',
 }
 
 export enum Tags {
@@ -10,6 +9,7 @@ export enum Tags {
 
 export enum Entities {
 	Player = 'player',
+	Camera = 'camera',
 }
 
 export enum Directions {
